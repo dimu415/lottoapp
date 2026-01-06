@@ -19,20 +19,30 @@ if not os.path.exists(BASE_EXCEL):
 df_base = pd.read_excel(BASE_EXCEL)
 
 # =====================================
-# 2️⃣ 추가 엑셀 병합
+# 2️⃣ 추가 엑셀 있으면 병합 (맨 위로)
 # =====================================
 if os.path.exists(ADD_EXCEL):
-    print("📌 추가 엑셀 발견 → 병합")
+    print("📌 추가 엑셀 발견 → 맨 위로 병합")
 
     df_add = pd.read_excel(ADD_EXCEL)
-    df_merged = pd.concat([df_base, df_add], ignore_index=True)
+
+    # 🔥 추가 엑셀을 맨 위로
+    df_merged = pd.concat([df_add, df_base], ignore_index=True)
+
+    # 중복 제거
     df_merged = df_merged.drop_duplicates()
 
+    # 저장
     df_merged.to_excel(BASE_EXCEL, index=False)
+
+    # 추가 엑셀 삭제
     os.remove(ADD_EXCEL)
+    print("✅ 병합 완료 (추가 엑셀 맨 위)")
 
 else:
     df_merged = df_base
+    print("📌 추가 엑셀 없음")
+
 
 # =====================================
 # 3️⃣ 당첨번호 컬럼
