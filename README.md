@@ -1,0 +1,2 @@
+# lottoapp
+lottoData
