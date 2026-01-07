@@ -55,7 +55,7 @@ num_cols = [
     'Unnamed: 6',
     'Unnamed: 7'
 ]
-
+BONUS_COL = "보너스번호"  # ← 실제 엑셀 컬럼명에 맞게 수정
 # =====================================
 # 4️⃣ 자리별 최다 출현
 # =====================================
@@ -114,11 +114,12 @@ history_rows = []
 
 for _, row in df_merged.iterrows():
     history_rows.append({
-        "round": int(row["회차"]) if "회차" in row else None,
-        "numbers": [
-            int(row[col]) for col in num_cols
-        ]
-    })
+    "round": int(row["회차"]) if "회차" in row else None,
+    "numbers": [
+        int(row[col]) for col in num_cols
+    ],
+    "bonus": int(row[BONUS_COL]) if BONUS_COL in row and not pd.isna(row[BONUS_COL]) else None
+})
 
 history_json = {
     "total_rounds": len(history_rows),
@@ -135,3 +136,4 @@ print("✅ 전체 처리 완료")
 print(f"- 총 회차 수: {len(df_merged)}")
 print("👉 lotto_stats.json 생성")
 print("👉 lotto_history.json 생성")
+
