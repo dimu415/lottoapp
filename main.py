@@ -93,6 +93,26 @@ df_pair = pd.DataFrame(
     [(a, b, cnt) for (a, b), cnt in pair_counter.items()],
     columns=["a", "b", "count"]
 ).sort_values("count", ascending=False)
+    
+# =====================================
+# 🔟 전회차 → 다음회차 번호 전이 통계
+# =====================================
+transition_counter = Counter()
+
+numbers_only = df_merged[num_cols].values
+
+for i in range(len(numbers_only) - 1):
+    prev_nums = numbers_only[i]
+    next_nums = numbers_only[i + 1]
+
+    for p in prev_nums:
+        for n in next_nums:
+            transition_counter[(int(p), int(n))] += 1
+
+df_transition = pd.DataFrame(
+    [(p, n, cnt) for (p, n), cnt in transition_counter.items()],
+    columns=["prev", "next", "count"]
+).sort_values("count", ascending=False)
 
 # =====================================
 # 7️⃣ 분석 결과 JSON (Unity용)
@@ -101,7 +121,8 @@ stats_json = {
     "total_rounds": len(df_merged),
     "position_stats": df_position.to_dict(orient="records"),
     "number_stats": df_number.to_dict(orient="records"),
-    "pair_stats": df_pair.to_dict(orient="records")
+    "pair_stats": df_pair.to_dict(orient="records"),
+    "transition_stats": df_transition.to_dict(orient="records")  # 🔥 추가
 }
 
 with open("lotto_stats.json", "w", encoding="utf-8") as f:
@@ -136,5 +157,6 @@ print("✅ 전체 처리 완료")
 print(f"- 총 회차 수: {len(df_merged)}")
 print("👉 lotto_stats.json 생성")
 print("👉 lotto_history.json 생성")
+
 
 
