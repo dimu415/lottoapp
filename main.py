@@ -118,6 +118,10 @@ df_transition = pd.DataFrame(
 # ==================================================
 # 8 최신 회차 + 당첨금 정보
 # ==================================================
+HEADERS = {
+    "User-Agent": "Mozilla/5.0"
+}
+
 LOTTO_INFO_URL = "https://www.dhlottery.co.kr/lt645/selectPstLt645Info.do"
 
 res = requests.get(
@@ -242,6 +246,7 @@ history_json = {
 
 with open("lotto_history.json", "w", encoding="utf-8") as f:
     json.dump(history_json, f, ensure_ascii=False, indent=2)
+
 
 
 
