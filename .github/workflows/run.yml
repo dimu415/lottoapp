@@ -14,7 +14,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install pandas openpyxl
+      - run: pip install pandas openpyxl requests
 
       - run: python main.py
 
