@@ -52,7 +52,7 @@ for LOTTO_INFO_URL in LOTTO_INFO_URLs:
           "paidQty": result[f"stRnk{i}WnCmptnQty"],
           "remainQty": result[f"stIvtRnk{i}Qty"]
       })
-  count++
+  count +=1
       
 with open("Speetto.json", "w", encoding="utf-8") as f:
     json.dump(new_json, f, ensure_ascii=False, indent=2)
