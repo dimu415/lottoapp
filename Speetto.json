@@ -1,0 +1,158 @@
+{
+  "스피또500": {
+    "game": {
+      "episode": 48,
+      "status": "판매중",
+      "price": 500
+    },
+    "sales": {
+      "publishQty": 20000000,
+      "storeRate": 6,
+      "salesStart": "2025-12-29",
+      "salesEnd": "2026-12-31",
+      "payEnd": "2027-12-31",
+      "payRate": 56
+    },
+    "ranks": [
+      {
+        "rank": 1,
+        "prize": "2억원",
+        "totalQty": 5,
+        "paidQty": 0,
+        "remainQty": 5
+      },
+      {
+        "rank": 2,
+        "prize": "1백만원",
+        "totalQty": 100,
+        "paidQty": 0,
+        "remainQty": 100
+      },
+      {
+        "rank": 3,
+        "prize": "5천원",
+        "totalQty": 300000,
+        "paidQty": 1752,
+        "remainQty": 298248
+      },
+      {
+        "rank": 4,
+        "prize": "500원",
+        "totalQty": 6000000,
+        "paidQty": 33157,
+        "remainQty": 5966843
+      },
+      {
+        "rank": 5,
+        "prize": "0원",
+        "totalQty": 0,
+        "paidQty": 0,
+        "remainQty": 0
+      }
+    ]
+  },
+  "스피또1000": {
+    "game": {
+      "episode": 102,
+      "status": "판매중",
+      "price": 1000
+    },
+    "sales": {
+      "publishQty": 55000000,
+      "storeRate": 48,
+      "salesStart": "2025-12-29",
+      "salesEnd": "2026-03-31",
+      "payEnd": "2027-03-31",
+      "payRate": 60
+    },
+    "ranks": [
+      {
+        "rank": 1,
+        "prize": "5억원",
+        "totalQty": 11,
+        "paidQty": 1,
+        "remainQty": 10
+      },
+      {
+        "rank": 2,
+        "prize": "2천만원",
+        "totalQty": 55,
+        "paidQty": 6,
+        "remainQty": 49
+      },
+      {
+        "rank": 3,
+        "prize": "1만원",
+        "totalQty": 302500,
+        "paidQty": 26006,
+        "remainQty": 276494
+      },
+      {
+        "rank": 4,
+        "prize": "5천원",
+        "totalQty": 1375000,
+        "paidQty": 114462,
+        "remainQty": 1260538
+      },
+      {
+        "rank": 5,
+        "prize": "1천원",
+        "totalQty": 16500000,
+        "paidQty": 1283994,
+        "remainQty": 15216006
+      }
+    ]
+  },
+  "스피또2000": {
+    "game": {
+      "episode": 65,
+      "status": "판매중",
+      "price": 2000
+    },
+    "sales": {
+      "publishQty": 30000000,
+      "storeRate": 36,
+      "salesStart": "2025-12-29",
+      "salesEnd": "2026-04-30",
+      "payEnd": "2027-04-30",
+      "payRate": 60.25
+    },
+    "ranks": [
+      {
+        "rank": 1,
+        "prize": "10억원",
+        "totalQty": 6,
+        "paidQty": 0,
+        "remainQty": 6
+      },
+      {
+        "rank": 2,
+        "prize": "1억원",
+        "totalQty": 18,
+        "paidQty": 2,
+        "remainQty": 16
+      },
+      {
+        "rank": 3,
+        "prize": "1천만원",
+        "totalQty": 150,
+        "paidQty": 16,
+        "remainQty": 134
+      },
+      {
+        "rank": 4,
+        "prize": "2만원",
+        "totalQty": 82500,
+        "paidQty": 4871,
+        "remainQty": 77629
+      },
+      {
+        "rank": 5,
+        "prize": "4천원",
+        "totalQty": 2100000,
+        "paidQty": 114077,
+        "remainQty": 1985923
+      }
+    ]
+  }
+}
