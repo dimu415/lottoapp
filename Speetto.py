@@ -13,6 +13,8 @@ LOTTO_INFO_URL_2000 = "https://www.dhlottery.co.kr/st/selectPblcnDsctnDtl.do?nts
 
 LOTTO_INFO_URLs=[LOTTO_INFO_URL_500,LOTTO_INFO_URL_1000,LOTTO_INFO_URL_2000]
 new_json={}
+title=["Speetto500","Speetto1000","Speetto2000"]
+count=0
 for LOTTO_INFO_URL in LOTTO_INFO_URLs:
   res = requests.get(
       LOTTO_INFO_URL,
@@ -23,7 +25,7 @@ for LOTTO_INFO_URL in LOTTO_INFO_URLs:
 
   data = res.json()
   result = data["data"]["result"]
-  new_json[result["stGmTypeNm"]]={
+  new_json[title[count]]={
             "game": {
                       "episode": result["stEpsd"],
                       "status": result["ntslStatus"],
@@ -50,6 +52,7 @@ for LOTTO_INFO_URL in LOTTO_INFO_URLs:
           "paidQty": result[f"stRnk{i}WnCmptnQty"],
           "remainQty": result[f"stIvtRnk{i}Qty"]
       })
+  count++
       
 with open("Speetto.json", "w", encoding="utf-8") as f:
     json.dump(new_json, f, ensure_ascii=False, indent=2)
