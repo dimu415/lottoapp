@@ -1,3 +1,9 @@
+import pandas as pd
+import itertools
+import json
+import os
+import requests
+
 HEADERS = {
     "User-Agent": "Mozilla/5.0"
 }
