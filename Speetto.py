@@ -45,7 +45,7 @@ for LOTTO_INFO_URL in LOTTO_INFO_URLs:
     
 
   for i in range(1, 6):
-      new_json[result["stGmTypeNm"]]["ranks"].append({
+      new_json[title[count]]["ranks"].append({
           "rank": i,
           "prize": result[f"stRnk{i}GdsLstcCharCn"],
           "totalQty": result[f"stRnk{i}WnQty"],
