@@ -192,7 +192,41 @@ shops = {
     "rank1": fetch_shops(1),
     "rank2": fetch_shops(2)
 }
+# =====================================
+# 🔥 홀짝 개수 & 번호 총합 통계
+# =====================================
+odd_even_stats = []
+sum_stats = []
 
+for row in df_merged[num_cols].values:
+    odd_count = sum(1 for n in row if n % 2 == 1)
+    even_count = sum(1 for n in row if n % 2 == 0)
+    total_sum = int(sum(row))
+
+    odd_even_stats.append({
+        "odd": odd_count,
+        "even": even_count
+    })
+
+    sum_stats.append(total_sum)
+
+# 홀짝 패턴 빈도
+odd_even_counter = Counter(
+    (item["odd"], item["even"]) for item in odd_even_stats
+)
+
+df_odd_even = pd.DataFrame(
+    [(odd, even, cnt) for (odd, even), cnt in odd_even_counter.items()],
+    columns=["odd", "even", "count"]
+).sort_values("count", ascending=False)
+
+# 총합 분포
+sum_counter = Counter(sum_stats)
+
+df_sum = pd.DataFrame(
+    sorted(sum_counter.items()),
+    columns=["sum", "count"]
+)
 # ==================================================
 # 10 최종 JSON
 # ==================================================
@@ -219,7 +253,9 @@ stats_json = {
     "position_stats": df_position.to_dict(orient="records"),
     "number_stats": df_number.to_dict(orient="records"),
     "pair_stats": df_pair.to_dict(orient="records"),
-    "transition_stats": df_transition.to_dict(orient="records")  # 🔥 추가
+    "transition_stats": df_transition.to_dict(orient="records")  # 🔥 추가,
+       "odd_even_stats": df_odd_even.to_dict(orient="records"),
+    "sum_stats": df_sum.to_dict(orient="records")
 }
 
 with open("lotto_stats.json", "w", encoding="utf-8") as f:
