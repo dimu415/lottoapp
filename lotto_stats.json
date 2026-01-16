@@ -15292,5 +15292,668 @@
       "next": 23,
       "count": 8
     }
+  ],
+  "odd_even_stats": [
+    {
+      "odd": 3,
+      "even": 3,
+      "count": 405
+    },
+    {
+      "odd": 4,
+      "even": 2,
+      "count": 320
+    },
+    {
+      "odd": 2,
+      "even": 4,
+      "count": 269
+    },
+    {
+      "odd": 5,
+      "even": 1,
+      "count": 96
+    },
+    {
+      "odd": 1,
+      "even": 5,
+      "count": 80
+    },
+    {
+      "odd": 6,
+      "even": 0,
+      "count": 18
+    },
+    {
+      "odd": 0,
+      "even": 6,
+      "count": 17
+    }
+  ],
+  "sum_stats": [
+    {
+      "sum": 48,
+      "count": 1
+    },
+    {
+      "sum": 50,
+      "count": 1
+    },
+    {
+      "sum": 56,
+      "count": 2
+    },
+    {
+      "sum": 58,
+      "count": 1
+    },
+    {
+      "sum": 63,
+      "count": 1
+    },
+    {
+      "sum": 64,
+      "count": 1
+    },
+    {
+      "sum": 66,
+      "count": 1
+    },
+    {
+      "sum": 67,
+      "count": 2
+    },
+    {
+      "sum": 68,
+      "count": 2
+    },
+    {
+      "sum": 69,
+      "count": 1
+    },
+    {
+      "sum": 70,
+      "count": 1
+    },
+    {
+      "sum": 71,
+      "count": 1
+    },
+    {
+      "sum": 72,
+      "count": 1
+    },
+    {
+      "sum": 73,
+      "count": 4
+    },
+    {
+      "sum": 75,
+      "count": 6
+    },
+    {
+      "sum": 76,
+      "count": 2
+    },
+    {
+      "sum": 77,
+      "count": 1
+    },
+    {
+      "sum": 78,
+      "count": 2
+    },
+    {
+      "sum": 79,
+      "count": 6
+    },
+    {
+      "sum": 81,
+      "count": 1
+    },
+    {
+      "sum": 82,
+      "count": 1
+    },
+    {
+      "sum": 83,
+      "count": 5
+    },
+    {
+      "sum": 84,
+      "count": 3
+    },
+    {
+      "sum": 85,
+      "count": 4
+    },
+    {
+      "sum": 86,
+      "count": 3
+    },
+    {
+      "sum": 87,
+      "count": 5
+    },
+    {
+      "sum": 88,
+      "count": 4
+    },
+    {
+      "sum": 89,
+      "count": 8
+    },
+    {
+      "sum": 90,
+      "count": 6
+    },
+    {
+      "sum": 91,
+      "count": 8
+    },
+    {
+      "sum": 92,
+      "count": 1
+    },
+    {
+      "sum": 93,
+      "count": 7
+    },
+    {
+      "sum": 94,
+      "count": 2
+    },
+    {
+      "sum": 95,
+      "count": 7
+    },
+    {
+      "sum": 96,
+      "count": 9
+    },
+    {
+      "sum": 97,
+      "count": 3
+    },
+    {
+      "sum": 98,
+      "count": 12
+    },
+    {
+      "sum": 99,
+      "count": 9
+    },
+    {
+      "sum": 100,
+      "count": 8
+    },
+    {
+      "sum": 101,
+      "count": 6
+    },
+    {
+      "sum": 102,
+      "count": 9
+    },
+    {
+      "sum": 103,
+      "count": 4
+    },
+    {
+      "sum": 104,
+      "count": 9
+    },
+    {
+      "sum": 105,
+      "count": 12
+    },
+    {
+      "sum": 106,
+      "count": 2
+    },
+    {
+      "sum": 107,
+      "count": 4
+    },
+    {
+      "sum": 108,
+      "count": 9
+    },
+    {
+      "sum": 109,
+      "count": 16
+    },
+    {
+      "sum": 110,
+      "count": 10
+    },
+    {
+      "sum": 111,
+      "count": 11
+    },
+    {
+      "sum": 112,
+      "count": 7
+    },
+    {
+      "sum": 113,
+      "count": 10
+    },
+    {
+      "sum": 114,
+      "count": 16
+    },
+    {
+      "sum": 115,
+      "count": 14
+    },
+    {
+      "sum": 116,
+      "count": 20
+    },
+    {
+      "sum": 117,
+      "count": 11
+    },
+    {
+      "sum": 118,
+      "count": 12
+    },
+    {
+      "sum": 119,
+      "count": 7
+    },
+    {
+      "sum": 120,
+      "count": 10
+    },
+    {
+      "sum": 121,
+      "count": 12
+    },
+    {
+      "sum": 122,
+      "count": 15
+    },
+    {
+      "sum": 123,
+      "count": 11
+    },
+    {
+      "sum": 124,
+      "count": 17
+    },
+    {
+      "sum": 125,
+      "count": 15
+    },
+    {
+      "sum": 126,
+      "count": 12
+    },
+    {
+      "sum": 127,
+      "count": 17
+    },
+    {
+      "sum": 128,
+      "count": 23
+    },
+    {
+      "sum": 129,
+      "count": 7
+    },
+    {
+      "sum": 130,
+      "count": 19
+    },
+    {
+      "sum": 131,
+      "count": 17
+    },
+    {
+      "sum": 132,
+      "count": 18
+    },
+    {
+      "sum": 133,
+      "count": 17
+    },
+    {
+      "sum": 134,
+      "count": 19
+    },
+    {
+      "sum": 135,
+      "count": 14
+    },
+    {
+      "sum": 136,
+      "count": 17
+    },
+    {
+      "sum": 137,
+      "count": 11
+    },
+    {
+      "sum": 138,
+      "count": 16
+    },
+    {
+      "sum": 139,
+      "count": 15
+    },
+    {
+      "sum": 140,
+      "count": 15
+    },
+    {
+      "sum": 141,
+      "count": 12
+    },
+    {
+      "sum": 142,
+      "count": 17
+    },
+    {
+      "sum": 143,
+      "count": 12
+    },
+    {
+      "sum": 144,
+      "count": 23
+    },
+    {
+      "sum": 145,
+      "count": 12
+    },
+    {
+      "sum": 146,
+      "count": 11
+    },
+    {
+      "sum": 147,
+      "count": 14
+    },
+    {
+      "sum": 148,
+      "count": 19
+    },
+    {
+      "sum": 149,
+      "count": 9
+    },
+    {
+      "sum": 150,
+      "count": 11
+    },
+    {
+      "sum": 151,
+      "count": 11
+    },
+    {
+      "sum": 152,
+      "count": 16
+    },
+    {
+      "sum": 153,
+      "count": 8
+    },
+    {
+      "sum": 154,
+      "count": 12
+    },
+    {
+      "sum": 155,
+      "count": 14
+    },
+    {
+      "sum": 156,
+      "count": 10
+    },
+    {
+      "sum": 157,
+      "count": 13
+    },
+    {
+      "sum": 158,
+      "count": 9
+    },
+    {
+      "sum": 159,
+      "count": 8
+    },
+    {
+      "sum": 160,
+      "count": 14
+    },
+    {
+      "sum": 161,
+      "count": 7
+    },
+    {
+      "sum": 162,
+      "count": 11
+    },
+    {
+      "sum": 163,
+      "count": 14
+    },
+    {
+      "sum": 164,
+      "count": 16
+    },
+    {
+      "sum": 165,
+      "count": 18
+    },
+    {
+      "sum": 166,
+      "count": 10
+    },
+    {
+      "sum": 167,
+      "count": 9
+    },
+    {
+      "sum": 168,
+      "count": 6
+    },
+    {
+      "sum": 169,
+      "count": 15
+    },
+    {
+      "sum": 170,
+      "count": 8
+    },
+    {
+      "sum": 171,
+      "count": 6
+    },
+    {
+      "sum": 172,
+      "count": 12
+    },
+    {
+      "sum": 173,
+      "count": 7
+    },
+    {
+      "sum": 174,
+      "count": 9
+    },
+    {
+      "sum": 175,
+      "count": 17
+    },
+    {
+      "sum": 176,
+      "count": 10
+    },
+    {
+      "sum": 177,
+      "count": 8
+    },
+    {
+      "sum": 178,
+      "count": 7
+    },
+    {
+      "sum": 179,
+      "count": 4
+    },
+    {
+      "sum": 180,
+      "count": 4
+    },
+    {
+      "sum": 181,
+      "count": 3
+    },
+    {
+      "sum": 182,
+      "count": 8
+    },
+    {
+      "sum": 183,
+      "count": 7
+    },
+    {
+      "sum": 184,
+      "count": 6
+    },
+    {
+      "sum": 185,
+      "count": 4
+    },
+    {
+      "sum": 186,
+      "count": 3
+    },
+    {
+      "sum": 187,
+      "count": 4
+    },
+    {
+      "sum": 188,
+      "count": 5
+    },
+    {
+      "sum": 189,
+      "count": 4
+    },
+    {
+      "sum": 190,
+      "count": 4
+    },
+    {
+      "sum": 191,
+      "count": 3
+    },
+    {
+      "sum": 192,
+      "count": 5
+    },
+    {
+      "sum": 193,
+      "count": 4
+    },
+    {
+      "sum": 194,
+      "count": 4
+    },
+    {
+      "sum": 195,
+      "count": 1
+    },
+    {
+      "sum": 196,
+      "count": 5
+    },
+    {
+      "sum": 197,
+      "count": 3
+    },
+    {
+      "sum": 198,
+      "count": 2
+    },
+    {
+      "sum": 199,
+      "count": 2
+    },
+    {
+      "sum": 200,
+      "count": 1
+    },
+    {
+      "sum": 201,
+      "count": 4
+    },
+    {
+      "sum": 202,
+      "count": 2
+    },
+    {
+      "sum": 203,
+      "count": 3
+    },
+    {
+      "sum": 205,
+      "count": 1
+    },
+    {
+      "sum": 207,
+      "count": 2
+    },
+    {
+      "sum": 208,
+      "count": 1
+    },
+    {
+      "sum": 209,
+      "count": 2
+    },
+    {
+      "sum": 210,
+      "count": 1
+    },
+    {
+      "sum": 211,
+      "count": 1
+    },
+    {
+      "sum": 212,
+      "count": 1
+    },
+    {
+      "sum": 213,
+      "count": 1
+    },
+    {
+      "sum": 217,
+      "count": 1
+    },
+    {
+      "sum": 219,
+      "count": 1
+    },
+    {
+      "sum": 220,
+      "count": 1
+    },
+    {
+      "sum": 223,
+      "count": 1
+    },
+    {
+      "sum": 229,
+      "count": 1
+    },
+    {
+      "sum": 238,
+      "count": 1
+    }
   ]
 }

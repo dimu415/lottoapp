@@ -7,7 +7,7 @@
     },
     "sales": {
       "publishQty": 20000000,
-      "storeRate": 6,
+      "storeRate": 7,
       "salesStart": "2025-12-29",
       "salesEnd": "2026-12-31",
       "payEnd": "2027-12-31",
@@ -32,18 +32,25 @@
         "rank": 3,
         "prize": "5천원",
         "totalQty": 300000,
-        "paidQty": 1752,
-        "remainQty": 298248
+        "paidQty": 4371,
+        "remainQty": 295629
       },
       {
         "rank": 4,
         "prize": "500원",
         "totalQty": 6000000,
-        "paidQty": 33157,
-        "remainQty": 5966843
+        "paidQty": 83960,
+        "remainQty": 5916040
       },
       {
         "rank": 5,
+        "prize": "0원",
+        "totalQty": 0,
+        "paidQty": 0,
+        "remainQty": 0
+      },
+      {
+        "rank": 6,
         "prize": "0원",
         "totalQty": 0,
         "paidQty": 0,
@@ -59,7 +66,7 @@
     },
     "sales": {
       "publishQty": 55000000,
-      "storeRate": 48,
+      "storeRate": 67,
       "salesStart": "2025-12-29",
       "salesEnd": "2026-03-31",
       "payEnd": "2027-03-31",
@@ -77,29 +84,36 @@
         "rank": 2,
         "prize": "2천만원",
         "totalQty": 55,
-        "paidQty": 6,
-        "remainQty": 49
+        "paidQty": 13,
+        "remainQty": 42
       },
       {
         "rank": 3,
         "prize": "1만원",
         "totalQty": 302500,
-        "paidQty": 26006,
-        "remainQty": 276494
+        "paidQty": 69321,
+        "remainQty": 233179
       },
       {
         "rank": 4,
         "prize": "5천원",
         "totalQty": 1375000,
-        "paidQty": 114462,
-        "remainQty": 1260538
+        "paidQty": 307150,
+        "remainQty": 1067850
       },
       {
         "rank": 5,
         "prize": "1천원",
         "totalQty": 16500000,
-        "paidQty": 1283994,
-        "remainQty": 15216006
+        "paidQty": 3492024,
+        "remainQty": 13007976
+      },
+      {
+        "rank": 6,
+        "prize": "0원",
+        "totalQty": 0,
+        "paidQty": 0,
+        "remainQty": 0
       }
     ]
   },
@@ -111,7 +125,7 @@
     },
     "sales": {
       "publishQty": 30000000,
-      "storeRate": 36,
+      "storeRate": 49,
       "salesStart": "2025-12-29",
       "salesEnd": "2026-04-30",
       "payEnd": "2027-04-30",
@@ -136,22 +150,29 @@
         "rank": 3,
         "prize": "1천만원",
         "totalQty": 150,
-        "paidQty": 16,
-        "remainQty": 134
+        "paidQty": 29,
+        "remainQty": 121
       },
       {
         "rank": 4,
         "prize": "2만원",
         "totalQty": 82500,
-        "paidQty": 4871,
-        "remainQty": 77629
+        "paidQty": 13067,
+        "remainQty": 69433
       },
       {
         "rank": 5,
         "prize": "4천원",
         "totalQty": 2100000,
-        "paidQty": 114077,
-        "remainQty": 1985923
+        "paidQty": 313935,
+        "remainQty": 1786065
+      },
+      {
+        "rank": 6,
+        "prize": "2천원",
+        "totalQty": 8400000,
+        "paidQty": 1230554,
+        "remainQty": 7169446
       }
     ]
   }
