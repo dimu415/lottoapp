@@ -253,8 +253,8 @@ stats_json = {
     "position_stats": df_position.to_dict(orient="records"),
     "number_stats": df_number.to_dict(orient="records"),
     "pair_stats": df_pair.to_dict(orient="records"),
-    "transition_stats": df_transition.to_dict(orient="records")  # 🔥 추가,
-       "odd_even_stats": df_odd_even.to_dict(orient="records"),
+    "transition_stats": df_transition.to_dict(orient="records"),
+    "odd_even_stats": df_odd_even.to_dict(orient="records"),
     "sum_stats": df_sum.to_dict(orient="records")
 }
 
@@ -282,6 +282,7 @@ history_json = {
 
 with open("lotto_history.json", "w", encoding="utf-8") as f:
     json.dump(history_json, f, ensure_ascii=False, indent=2)
+
 
 
 
