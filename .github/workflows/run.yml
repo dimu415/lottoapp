@@ -14,14 +14,25 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install pandas openpyxl requests
+      - name: Install dependencies
+        run: pip install pandas openpyxl requests matplotlib
 
-      - run: python main.py
-      - run: python Speetto.py
+      # ✅ 1) 최신 데이터 JSON 업데이트 (main.py)
+      - name: Run main.py (update JSON DB)
+        run: python Code/main.py
 
-      - run: |
+      # ✅ 2) 시각화 이미지 생성 (visualize.py)
+      - name: Run visualize.py (generate images)
+        run: python Code/visualize.py
+
+    # ✅ (선택) 스피또도 계속 실행할 거면 유지
+    #  - name: Run Speetto.py
+    #   run: python Code/Speetto.py
+
+      - name: Commit & Push changes
+        run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add .
-          git diff --cached --quiet || git commit -m "manual update lotto data"
+          git diff --cached --quiet || git commit -m "manual update lotto data + visualizations"
           git push
