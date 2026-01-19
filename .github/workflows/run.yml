@@ -1,38 +1,47 @@
-name: lotto-manual-update
+name: lotto-auto-update
 
 on:
-  workflow_dispatch:   # 버튼 눌러 실행
+  workflow_dispatch: # ✅ 수동 실행 버튼 유지
+  schedule:
+    # ✅ 매주 토요일 21:10 (KST)
+    # GitHub cron은 UTC 기준 → KST(UTC+9) = UTC 12:10
+    - cron: "10 12 * * 6"
 
 jobs:
   run:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Install dependencies
         run: pip install pandas openpyxl requests matplotlib
 
-      # ✅ 1) 최신 데이터 JSON 업데이트 (main.py)
+      # ✅ 1) 최신 데이터 JSON 업데이트
       - name: Run main.py (update JSON DB)
         run: python Code/main.py
 
-      # ✅ 2) 시각화 이미지 생성 (visualize.py)
+      # ✅ 2) 시각화 이미지 생성
       - name: Run visualize.py (generate images)
         run: python Code/visualize.py
 
-    # ✅ (선택) 스피또도 계속 실행할 거면 유지
-    #  - name: Run Speetto.py
-    #   run: python Code/Speetto.py
+      # ✅ Speetto 자동 실행은 주석 처리
+      # - name: Run Speetto.py
+      #   run: python Code/Speetto.py
 
+      # ✅ 3) 결과물만 커밋 (json + 이미지 폴더만)
       - name: Commit & Push changes
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add .
-          git diff --cached --quiet || git commit -m "manual update lotto data + visualizations"
+
+          git add Analysis_file/json Analysis_file/visualizations
+
+          git diff --cached --quiet || git commit -m "auto update lotto data + visualizations"
           git push
