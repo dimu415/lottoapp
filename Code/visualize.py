@@ -253,7 +253,7 @@ def make_pairstats_images(stats_json):
     df_pair = df_pair[["랭킹", "번호1", "번호2", "횟수"]]
 
     page_size = 15
-    total_pages = math.ceil(len(df_pair) / page_size)
+    total_pages = 10
 
     col_widths = [0.15, 0.2, 0.2, 0.2]
 
