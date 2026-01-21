@@ -163,7 +163,7 @@ def make_numbercount_images(stats_json):
     df_rank = df_rank[["랭킹", "번호", "출현횟수"]]
 
     page_size = 10
-    total_pages = math.ceil(len(df_rank) / page_size)
+    total_pages =10
 
     # 칸 폭 줄이기
     col_widths = [0.15, 0.2, 0.25]
