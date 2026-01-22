@@ -17,6 +17,15 @@ os.makedirs(OUT_DIR, exist_ok=True)
 STATS_PATH = os.path.join(JSON_DIR, "lotto_stats.json")
 HISTORY_PATH = os.path.join(JSON_DIR, "lotto_history.json")
 
+# ==============================
+# ✅ 저장 이미지 크기 고정 (픽셀)
+# ==============================
+TARGET_W = 1024
+TARGET_H = 1024
+SAVE_DPI = 220
+
+FIXED_FIGSIZE = (TARGET_W / SAVE_DPI, TARGET_H / SAVE_DPI)
+
 # ==================================================
 # ✅ 폰트 설정 (같은 폴더의 Maplestory Bold.ttf)
 # ==================================================
@@ -67,36 +76,30 @@ def df_to_table_image(
     title: str = "",
     color_columns=None,
     col_widths=None,
-    fig_w=8,
-    fig_h=None,
     font_prop=None
 ):
+    # ✅ 고정 캔버스 사용 (항상 같은 픽셀로 저장됨)
+    fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
+    ax.axis("off")
+    ax.set_position([0.02, 0.02, 0.96, 0.96])  # ✅ 여백 고정
+
     if df is None or df.empty:
-        fig, ax = plt.subplots(figsize=(8, 2))
-        ax.axis("off")
         if font_prop:
-            ax.text(0.5, 0.5, "데이터 없음", ha="center", va="center", fontsize=14, fontproperties=font_prop)
+            ax.text(0.5, 0.5, "데이터 없음", ha="center", va="center",
+                    fontsize=18, fontproperties=font_prop)
         else:
-            ax.text(0.5, 0.5, "데이터 없음", ha="center", va="center", fontsize=14)
+            ax.text(0.5, 0.5, "데이터 없음", ha="center", va="center", fontsize=18)
+
         if title:
-            if font_prop:
-                ax.set_title(title, fontsize=14, pad=12, fontproperties=font_prop)
-            else:
-                ax.set_title(title, fontsize=14, pad=12)
-        plt.tight_layout()
+            ax.set_title(title, fontsize=18, pad=12,
+                         fontproperties=font_prop if font_prop else None)
+
         ensure_dir(os.path.dirname(save_path))
-        plt.savefig(save_path, dpi=220, bbox_inches="tight")
+        plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)  # ✅ bbox_inches 제거!
         plt.close()
         return
 
     df_show = df.copy().reset_index(drop=True)
-    row_count = len(df_show)
-
-    if fig_h is None:
-        fig_h = max(3, 0.42 * row_count + 1.2)
-
-    fig, ax = plt.subplots(figsize=(fig_w, fig_h))
-    ax.axis("off")
 
     table = ax.table(
         cellText=df_show.values,
@@ -111,25 +114,26 @@ def df_to_table_image(
     table.set_fontsize(10)
     table.scale(1.0, 1.3)
 
-    # ✅ 제목 폰트 적용
+    # ✅ 제목
     if title:
-        if font_prop:
-            ax.set_title(title, fontsize=14, pad=12, fontproperties=font_prop)
-        else:
-            ax.set_title(title, fontsize=14, pad=12)
+        ax.set_title(title, fontsize=18, pad=12,
+                     fontproperties=font_prop if font_prop else None)
 
-    # ✅ 표 전체 폰트 적용
+    # ✅ 표 폰트 적용
     if font_prop:
         for (r, c), cell in table.get_celld().items():
             cell.get_text().set_fontproperties(font_prop)
 
-    # ✅ 특정 컬럼 숫자 셀 색칠
+    # ✅ 특정 컬럼 숫자 셀 배경색
     if color_columns:
         col_index_map = {c: i for i, c in enumerate(df_show.columns)}
+        row_count = len(df_show)
+
         for col_name in color_columns:
             if col_name not in col_index_map:
                 continue
             col_idx = col_index_map[col_name]
+
             for r in range(row_count):
                 val = df_show.iloc[r, col_idx]
                 try:
@@ -138,9 +142,8 @@ def df_to_table_image(
                 except:
                     pass
 
-    plt.tight_layout()
     ensure_dir(os.path.dirname(save_path))
-    plt.savefig(save_path, dpi=220, bbox_inches="tight")
+    plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)  # ✅ bbox_inches="tight" 삭제!
     plt.close()
 
 
