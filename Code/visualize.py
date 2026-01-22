@@ -17,13 +17,12 @@ os.makedirs(OUT_DIR, exist_ok=True)
 STATS_PATH = os.path.join(JSON_DIR, "lotto_stats.json")
 HISTORY_PATH = os.path.join(JSON_DIR, "lotto_history.json")
 
-# ==============================
-# ✅ 저장 이미지 크기 고정 (픽셀)
-# ==============================
+# ==================================================
+# ✅ 저장 이미지 크기 통일 (모든 PNG = 1024x1024)
+# ==================================================
 TARGET_W = 1024
 TARGET_H = 1024
 SAVE_DPI = 220
-
 FIXED_FIGSIZE = (TARGET_W / SAVE_DPI, TARGET_H / SAVE_DPI)
 
 # ==================================================
@@ -39,7 +38,7 @@ if os.path.exists(FONT_PATH):
 plt.rcParams["axes.unicode_minus"] = False
 
 # ==================================================
-# 🎨 색상 규칙 (요청 수정 반영)
+# 🎨 색상 규칙
 # ==================================================
 def number_bg_color(n: int):
     """
@@ -68,7 +67,7 @@ def ensure_dir(path: str):
     os.makedirs(path, exist_ok=True)
 
 # ==================================================
-# 📌 공통: DataFrame → PNG(표 이미지) 저장
+# 📌 공통: DataFrame → PNG(표 이미지) 저장 (크기 고정)
 # ==================================================
 def df_to_table_image(
     df: pd.DataFrame,
@@ -78,11 +77,12 @@ def df_to_table_image(
     col_widths=None,
     font_prop=None
 ):
-    # ✅ 고정 캔버스 사용 (항상 같은 픽셀로 저장됨)
+    # ✅ 항상 같은 크기 캔버스 사용
     fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
     ax.axis("off")
-    ax.set_position([0.02, 0.02, 0.96, 0.96])  # ✅ 여백 고정
+    ax.set_position([0.02, 0.02, 0.96, 0.96])  # 여백 고정
 
+    # 데이터 없을 때
     if df is None or df.empty:
         if font_prop:
             ax.text(0.5, 0.5, "데이터 없음", ha="center", va="center",
@@ -95,11 +95,12 @@ def df_to_table_image(
                          fontproperties=font_prop if font_prop else None)
 
         ensure_dir(os.path.dirname(save_path))
-        plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)  # ✅ bbox_inches 제거!
+        plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)  # ✅ tight 제거 (크기 고정 핵심)
         plt.close()
         return
 
     df_show = df.copy().reset_index(drop=True)
+    row_count = len(df_show)
 
     table = ax.table(
         cellText=df_show.values,
@@ -119,21 +120,18 @@ def df_to_table_image(
         ax.set_title(title, fontsize=18, pad=12,
                      fontproperties=font_prop if font_prop else None)
 
-    # ✅ 표 폰트 적용
+    # ✅ 표 전체 폰트 적용
     if font_prop:
         for (r, c), cell in table.get_celld().items():
             cell.get_text().set_fontproperties(font_prop)
 
-    # ✅ 특정 컬럼 숫자 셀 배경색
+    # ✅ 특정 컬럼 숫자 셀 색칠
     if color_columns:
         col_index_map = {c: i for i, c in enumerate(df_show.columns)}
-        row_count = len(df_show)
-
         for col_name in color_columns:
             if col_name not in col_index_map:
                 continue
             col_idx = col_index_map[col_name]
-
             for r in range(row_count):
                 val = df_show.iloc[r, col_idx]
                 try:
@@ -143,7 +141,7 @@ def df_to_table_image(
                     pass
 
     ensure_dir(os.path.dirname(save_path))
-    plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)  # ✅ bbox_inches="tight" 삭제!
+    plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)  # ✅ tight 제거
     plt.close()
 
 
@@ -156,8 +154,13 @@ def make_numbercount_images(stats_json):
 
     df_number = pd.DataFrame(stats_json.get("number_stats", []))
     if df_number.empty:
-        df_to_table_image(df_number, os.path.join(out_folder, "nc1.png"),
-                          "번호 출현 랭킹", ["번호"], font_prop=font_prop)
+        df_to_table_image(
+            df_number,
+            os.path.join(out_folder, "nc1.png"),
+            "번호 출현 랭킹",
+            ["번호"],
+            font_prop=font_prop
+        )
         return
 
     df_rank = df_number.sort_values("count", ascending=False).reset_index(drop=True)
@@ -166,9 +169,8 @@ def make_numbercount_images(stats_json):
     df_rank = df_rank[["랭킹", "번호", "출현횟수"]]
 
     page_size = 10
-    total_pages =10
+    total_pages = 10  # 너 원래 코드 유지
 
-    # 칸 폭 줄이기
     col_widths = [0.15, 0.2, 0.25]
 
     for i in range(total_pages):
@@ -178,13 +180,13 @@ def make_numbercount_images(stats_json):
 
         save_path = os.path.join(out_folder, f"nc{i+1}.png")
         title = f"번호 출현 랭킹 (10개씩)  {i+1}/{total_pages}"
+
         df_to_table_image(
             page_df,
             save_path,
             title,
             color_columns=["번호"],
             col_widths=col_widths,
-            fig_w=6.2,
             font_prop=font_prop
         )
 
@@ -198,11 +200,15 @@ def make_recent10_image(history_json):
 
     history = history_json.get("history", [])
     if not history:
-        df_to_table_image(pd.DataFrame(), os.path.join(out_folder, "rec1.png"),
-                          "최근 10회 당첨번호", font_prop=font_prop)
+        df_to_table_image(
+            pd.DataFrame(),
+            os.path.join(out_folder, "rec1.png"),
+            "최근 10회 당첨번호",
+            font_prop=font_prop
+        )
         return
 
-    recent10 = history[:10]  # 최신이 앞에 있다고 가정
+    recent10 = history[:10]
     rows = []
     for item in recent10:
         nums = item.get("numbers", [])
@@ -226,13 +232,12 @@ def make_recent10_image(history_json):
         "최근 10회 당첨번호",
         color_columns=["숫자1", "숫자2", "숫자3", "숫자4", "숫자5", "숫자6", "보너스"],
         col_widths=[0.18, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12],
-        fig_w=10.5,
         font_prop=font_prop
     )
 
 
 # ==================================================
-# 3) 동반출현 통계 (15회 이상) - 랭킹,번호1,번호2,횟수
+# 3) 동반출현 통계 (15회 이상)
 # ==================================================
 def make_pairstats_images(stats_json):
     out_folder = os.path.join(OUT_DIR, "pairStats")
@@ -240,15 +245,24 @@ def make_pairstats_images(stats_json):
 
     df_pair = pd.DataFrame(stats_json.get("pair_stats", []))
     if df_pair.empty:
-        df_to_table_image(df_pair, os.path.join(out_folder, "ps1.png"),
-                          "동반출현 통계 (15회 이상)", ["번호1", "번호2"], font_prop=font_prop)
+        df_to_table_image(
+            df_pair,
+            os.path.join(out_folder, "ps1.png"),
+            "동반출현 통계 (15회 이상)",
+            ["번호1", "번호2"],
+            font_prop=font_prop
+        )
         return
 
     df_pair = df_pair[df_pair["count"] >= 15].sort_values("count", ascending=False).reset_index(drop=True)
 
     if df_pair.empty:
-        df_to_table_image(df_pair, os.path.join(out_folder, "ps1.png"),
-                          "동반출현 통계 (15회 이상)", font_prop=font_prop)
+        df_to_table_image(
+            df_pair,
+            os.path.join(out_folder, "ps1.png"),
+            "동반출현 통계 (15회 이상)",
+            font_prop=font_prop
+        )
         return
 
     df_pair["랭킹"] = df_pair.index + 1
@@ -256,7 +270,7 @@ def make_pairstats_images(stats_json):
     df_pair = df_pair[["랭킹", "번호1", "번호2", "횟수"]]
 
     page_size = 15
-    total_pages = 10
+    total_pages = 10  # 너 원래 코드 유지
 
     col_widths = [0.15, 0.2, 0.2, 0.2]
 
@@ -267,20 +281,19 @@ def make_pairstats_images(stats_json):
 
         save_path = os.path.join(out_folder, f"ps{i+1}.png")
         title = f"동반출현 통계 (15회 이상)  {i+1}/{total_pages}"
+
         df_to_table_image(
             page_df,
             save_path,
             title,
             color_columns=["번호1", "번호2"],
             col_widths=col_widths,
-            fig_w=7.0,
             font_prop=font_prop
         )
 
 
 # ==================================================
 # 4) 전이 Best: prev별로 next 최다 1개만
-#    저장은 10개씩 분리
 # ==================================================
 def make_transition_best_images(stats_json):
     out_folder = os.path.join(OUT_DIR, "transitionBest")
@@ -288,11 +301,14 @@ def make_transition_best_images(stats_json):
 
     df_tr = pd.DataFrame(stats_json.get("transition_stats", []))
     if df_tr.empty:
-        df_to_table_image(df_tr, os.path.join(out_folder, "tb1.png"),
-                          "전이 Best", font_prop=font_prop)
+        df_to_table_image(
+            df_tr,
+            os.path.join(out_folder, "tb1.png"),
+            "전이 Best",
+            font_prop=font_prop
+        )
         return
 
-    # prev별 best next 추출
     df_tr = df_tr.sort_values(["prev", "count"], ascending=[True, False])
 
     best_rows = []
@@ -310,7 +326,6 @@ def make_transition_best_images(stats_json):
 
     df_best = pd.DataFrame(best_rows)
 
-    # 10개씩 분할 저장
     page_size = 10
     total_pages = math.ceil(len(df_best) / page_size)
 
@@ -323,20 +338,19 @@ def make_transition_best_images(stats_json):
 
         save_path = os.path.join(out_folder, f"tb{i+1}.png")
         title = f"전이 Best (10개씩)  {i+1}/{total_pages}"
+
         df_to_table_image(
             page_df,
             save_path,
             title,
             color_columns=["번호", "다음회차 최다번호"],
             col_widths=col_widths,
-            fig_w=8.0,
             font_prop=font_prop
         )
 
 
 # ==================================================
 # 5) 합계 20단위 버킷 - 비율 막대그래프
-#    최고비율=초록, 최저비율=노랑 그라데이션
 # ==================================================
 def make_sum_bucket_bar(stats_json):
     out_folder = os.path.join(OUT_DIR, "sumBucket")
@@ -344,12 +358,11 @@ def make_sum_bucket_bar(stats_json):
 
     df_sum = pd.DataFrame(stats_json.get("sum_stats", []))
     if df_sum.empty:
-        fig, ax = plt.subplots(figsize=(10, 4))
+        fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
         ax.axis("off")
-        ax.text(0.5, 0.5, "sum_stats 데이터 없음", ha="center", va="center", fontsize=14,
-                fontproperties=font_prop if font_prop else None)
-        plt.tight_layout()
-        plt.savefig(os.path.join(out_folder, "sum_bucket.png"), dpi=220, bbox_inches="tight")
+        ax.text(0.5, 0.5, "sum_stats 데이터 없음", ha="center", va="center",
+                fontsize=14, fontproperties=font_prop if font_prop else None)
+        plt.savefig(os.path.join(out_folder, "sum_bucket.png"), dpi=SAVE_DPI, transparent=True)
         plt.close()
         return
 
@@ -367,14 +380,12 @@ def make_sum_bucket_bar(stats_json):
     total = bucket_df["count"].sum()
     bucket_df["ratio"] = (bucket_df["count"] / total) * 100
 
-    # 색상 그라데이션: 최고=초록, 최저=노랑
     max_r = bucket_df["ratio"].max()
     min_r = bucket_df["ratio"].min()
 
     def lerp_color(t):
-        # t=0 -> 초록, t=1 -> 노랑
-        green = (76/255, 175/255, 80/255)   # #4CAF50
-        yellow = (255/255, 235/255, 59/255) # #FFEB3B
+        green = (76/255, 175/255, 80/255)
+        yellow = (255/255, 235/255, 59/255)
         return (
             green[0] + (yellow[0] - green[0]) * t,
             green[1] + (yellow[1] - green[1]) * t,
@@ -386,11 +397,10 @@ def make_sum_bucket_bar(stats_json):
         if max_r == min_r:
             t = 0.5
         else:
-            # max에 가까울수록 초록 (t 작게)
             t = (max_r - r) / (max_r - min_r)
         colors.append(lerp_color(t))
 
-    plt.figure(figsize=(12, 5))
+    plt.figure(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
     bars = plt.bar(bucket_df["bucket"], bucket_df["ratio"], color=colors)
 
     plt.title("당첨번호합계", fontproperties=font_prop if font_prop else None)
@@ -399,7 +409,6 @@ def make_sum_bucket_bar(stats_json):
 
     plt.grid(True, axis="y", alpha=0.25)
 
-    # 막대 위에 비율 표시
     for bar, ratio in zip(bars, bucket_df["ratio"]):
         plt.text(
             bar.get_x() + bar.get_width() / 2,
@@ -411,8 +420,7 @@ def make_sum_bucket_bar(stats_json):
             fontproperties=font_prop if font_prop else None
         )
 
-    plt.tight_layout()
-    plt.savefig(os.path.join(out_folder, "sum_bucket.png"), dpi=220, bbox_inches="tight")
+    plt.savefig(os.path.join(out_folder, "sum_bucket.png"), dpi=SAVE_DPI, transparent=True)
     plt.close()
 
 
@@ -425,12 +433,11 @@ def make_odd_even_pie(stats_json):
 
     df_oe = pd.DataFrame(stats_json.get("odd_even_stats", []))
     if df_oe.empty:
-        fig, ax = plt.subplots(figsize=(6, 6))
+        fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
         ax.axis("off")
         ax.text(0.5, 0.5, "odd_even_stats 데이터 없음", ha="center", va="center",
                 fontsize=14, fontproperties=font_prop if font_prop else None)
-        plt.tight_layout()
-        plt.savefig(os.path.join(out_folder, "odd_even_pie.png"), dpi=220, bbox_inches="tight")
+        plt.savefig(os.path.join(out_folder, "odd_even_pie.png"), dpi=SAVE_DPI, transparent=True)
         plt.close()
         return
 
@@ -438,7 +445,6 @@ def make_odd_even_pie(stats_json):
     df_oe["even"] = df_oe["even"].astype(int)
     df_oe["count"] = df_oe["count"].astype(int)
 
-    # 내림차순 정렬
     df_oe = df_oe.sort_values("count", ascending=False).reset_index(drop=True)
 
     labels = [f"{o}:{e}" for o, e in zip(df_oe["odd"], df_oe["even"])]
@@ -447,31 +453,27 @@ def make_odd_even_pie(stats_json):
     total = sum(sizes)
     percentages = [(v / total) * 100 for v in sizes]
 
-    # 상위 4개만 표시하는 autopct
     def make_autopct(percent_list):
         idx = {"i": -1}
-
         def _autopct(pct):
             idx["i"] += 1
-            # 상위 4개만 표시
             if idx["i"] < 4:
                 return f"{pct:.1f}%"
             return ""
         return _autopct
 
-    plt.figure(figsize=(8, 7))
+    plt.figure(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
 
     wedges, texts, autotexts = plt.pie(
         sizes,
         labels=None,
         autopct=make_autopct(percentages),
         startangle=90,
-        wedgeprops={"width": 0.48, "edgecolor": "white"}  # ✅ 도넛(두껍게)
+        wedgeprops={"width": 0.48, "edgecolor": "white"}
     )
 
     plt.title("홀짝 비율", fontproperties=font_prop if font_prop else None)
 
-    # ✅ 범례 + 홀짝 순서 안내
     legend_title = "표기: 홀:짝 (왼쪽=홀 / 오른쪽=짝)"
     plt.legend(
         wedges, labels,
@@ -482,8 +484,7 @@ def make_odd_even_pie(stats_json):
         title_fontproperties=font_prop if font_prop else None
     )
 
-    plt.tight_layout()
-    plt.savefig(os.path.join(out_folder, "odd_even_pie.png"), dpi=220, bbox_inches="tight")
+    plt.savefig(os.path.join(out_folder, "odd_even_pie.png"), dpi=SAVE_DPI, transparent=True)
     plt.close()
 
 
@@ -502,22 +503,11 @@ def main():
         with open(HISTORY_PATH, "r", encoding="utf-8") as f:
             history_json = json.load(f)
 
-    # 1) 번호 출현 랭킹
     make_numbercount_images(stats_json)
-
-    # 2) 최근 10회차 표
     make_recent10_image(history_json)
-
-    # 3) 동반출현(15회 이상)
     make_pairstats_images(stats_json)
-
-    # 4) 전이 Best (10개씩)
     make_transition_best_images(stats_json)
-
-    # 5) 합계 버킷 막대 + 비율
     make_sum_bucket_bar(stats_json)
-
-    # 6) 홀짝 파이
     make_odd_even_pie(stats_json)
 
     print("✅ 시각화 이미지 저장 완료!")
