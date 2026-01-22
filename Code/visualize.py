@@ -84,20 +84,28 @@ def df_to_table_image(
     fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
     ax.axis("off")
 
-    # ✅ 제목/표 가까이 붙이기 (위쪽 공간 좁힘)
-    ax.set_position([0.05, 0.06, 0.90, 0.88])
+    # ✅ 여백 (왼쪽 라벨 잘림 방지에도 도움)
+    fig.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.06)
+
+    # ✅ 제목을 축 안쪽에 직접 찍는다 (표와 거리 확 줄어듦)
+    if title:
+        ax.text(
+            0.5, 0.97, title,
+            ha="center", va="top",
+            fontsize=title_fontsize,
+            transform=ax.transAxes,
+            fontproperties=font_prop if font_prop else None
+        )
 
     # ✅ 데이터 없음
     if df is None or df.empty:
-        if title:
-            ax.set_title(title, fontsize=title_fontsize, pad=4,
-                         fontproperties=font_prop if font_prop else None)
-
-        ax.text(0.5, 0.5, "데이터 없음",
-                ha="center", va="center",
-                fontsize=title_fontsize,
-                fontproperties=font_prop if font_prop else None)
-
+        ax.text(
+            0.5, 0.5, "데이터 없음",
+            ha="center", va="center",
+            fontsize=title_fontsize,
+            transform=ax.transAxes,
+            fontproperties=font_prop if font_prop else None
+        )
         ensure_dir(os.path.dirname(save_path))
         plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)
         plt.close()
@@ -106,42 +114,37 @@ def df_to_table_image(
     df_show = df.copy().reset_index(drop=True)
     row_count = len(df_show)
 
-    # ✅ 행이 많으면 폰트 줄이기 시작
-    # (최근당첨 10줄 같은건 너무 커지지 않게)
+    # ✅ 행 많으면 폰트 자동 감소
     font_size = base_fontsize
     if row_count >= 20:
-        font_size = 12
+        font_size = min(font_size, 12)
     if row_count >= 35:
-        font_size = 10
+        font_size = min(font_size, 10)
     if row_count >= 55:
-        font_size = 8
+        font_size = min(font_size, 8)
 
-    # ✅ 셀 높이 (행 많을수록 줄임)
-    scale_y = 1.25
+    # ✅ 셀 높이 자동 조절
+    scale_y = 1.15
     if row_count >= 20:
-        scale_y = 1.10
+        scale_y = 1.05
     if row_count >= 35:
-        scale_y = 1.00
+        scale_y = 0.95
     if row_count >= 55:
-        scale_y = 0.90
+        scale_y = 0.88
 
+    # ✅ 표를 위쪽으로 끌어올린다 (제목과 거리 최소화)
     table = ax.table(
         cellText=df_show.values,
         colLabels=df_show.columns,
-        loc="center",
         cellLoc="center",
         colLoc="center",
-        colWidths=col_widths
+        colWidths=col_widths,
+        bbox=[0.02, 0.05, 0.96, 0.86]  # ✅ 핵심: 표 위치/크기 직접 고정 (위로 올림)
     )
 
     table.auto_set_font_size(False)
     table.set_fontsize(font_size)
     table.scale(1.0, scale_y)
-
-    # ✅ 제목 (표랑 가깝게)
-    if title:
-        ax.set_title(title, fontsize=title_fontsize, pad=4,
-                     fontproperties=font_prop if font_prop else None)
 
     # ✅ 표 폰트 적용
     if font_prop:
@@ -163,10 +166,10 @@ def df_to_table_image(
                 except:
                     pass
 
-    # ✅ 저장 (크기 고정)
     ensure_dir(os.path.dirname(save_path))
     plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)
     plt.close()
+
 
 
 # ==================================================
@@ -340,7 +343,7 @@ def make_transition_best_images(stats_json):
         df_to_table_image(
             df_tr,
             os.path.join(out_folder, "tb1.png"),
-            "전이 TOP",
+            "전이",
             font_prop=font_prop
         )
         return
@@ -397,6 +400,8 @@ def make_sum_bucket_bar(stats_json):
     df_sum = pd.DataFrame(stats_json.get("sum_stats", []))
     if df_sum.empty:
         fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
+        fig.subplots_adjust(left=0.16, right=0.95, top=0.90, bottom=0.22)
+
         ax.axis("off")
         ax.text(0.5, 0.5, "sum_stats 데이터 없음", ha="center", va="center",
                 fontsize=20, fontproperties=font_prop if font_prop else None)
