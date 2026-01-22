@@ -18,11 +18,13 @@ STATS_PATH = os.path.join(JSON_DIR, "lotto_stats.json")
 HISTORY_PATH = os.path.join(JSON_DIR, "lotto_history.json")
 
 # ==================================================
-# ✅ 저장 이미지 크기 통일 (모든 PNG = 1024x1024)
+# ✅ 저장 이미지 크기 통일 
 # ==================================================
+
+# ✅ 최종 저장 PNG 크기 고정 (2048x2048)
 TARGET_W = 2048
 TARGET_H = 2048
-SAVE_DPI = 220
+SAVE_DPI = 256
 FIXED_FIGSIZE = (TARGET_W / SAVE_DPI, TARGET_H / SAVE_DPI)
 
 # ==================================================
@@ -77,31 +79,49 @@ def df_to_table_image(
     col_widths=None,
     font_prop=None
 ):
-    # ✅ 항상 같은 크기 캔버스 사용
+
     fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
     ax.axis("off")
-    ax.set_position([0.02, 0.02, 0.96, 0.96])  # 여백 고정
 
-    # 데이터 없을 때
+    # ✅ 영역(여백) 고정 (이 안에 표가 무조건 들어가야 함)
+    ax.set_position([0.05, 0.06, 0.90, 0.86])
+
+    # -------------------------
+    # 데이터 없음 처리
+    # -------------------------
     if df is None or df.empty:
-        if font_prop:
-            ax.text(0.5, 0.5, "데이터 없음", ha="center", va="center",
-                    fontsize=18, fontproperties=font_prop)
-        else:
-            ax.text(0.5, 0.5, "데이터 없음", ha="center", va="center", fontsize=18)
-
         if title:
-            ax.set_title(title, fontsize=18, pad=12,
+            ax.set_title(title, fontsize=28, pad=14,
                          fontproperties=font_prop if font_prop else None)
 
+        ax.text(0.5, 0.5, "데이터 없음",
+                ha="center", va="center",
+                fontsize=26,
+                fontproperties=font_prop if font_prop else None)
+
         ensure_dir(os.path.dirname(save_path))
-        plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)  # ✅ tight 제거 (크기 고정 핵심)
+        plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)  # ✅ tight 금지
         plt.close()
         return
 
     df_show = df.copy().reset_index(drop=True)
     row_count = len(df_show)
+    col_count = len(df_show.columns)
 
+    # -------------------------
+    # ✅ 기본 폰트/스케일 설정
+    # (행 많으면 자동으로 작게 시작)
+    # -------------------------
+    base_font = 22
+    base_font = min(base_font, max(10, int(500 / (row_count + 6))))
+
+    font_size = base_font
+    scale_x = 1.0
+    scale_y = max(0.8, min(1.6, 28 / (row_count + 1)))
+
+    # -------------------------
+    # ✅ 표 생성
+    # -------------------------
     table = ax.table(
         cellText=df_show.values,
         colLabels=df_show.columns,
@@ -112,20 +132,20 @@ def df_to_table_image(
     )
 
     table.auto_set_font_size(False)
-    table.set_fontsize(10)
-    table.scale(1.0, 1.3)
+    table.set_fontsize(font_size)
+    table.scale(scale_x, scale_y)
 
     # ✅ 제목
     if title:
-        ax.set_title(title, fontsize=18, pad=12,
+        ax.set_title(title, fontsize=30, pad=14,
                      fontproperties=font_prop if font_prop else None)
 
-    # ✅ 표 전체 폰트 적용
+    # ✅ 폰트 적용
     if font_prop:
         for (r, c), cell in table.get_celld().items():
             cell.get_text().set_fontproperties(font_prop)
 
-    # ✅ 특정 컬럼 숫자 셀 색칠
+    # ✅ 숫자 컬럼 배경색
     if color_columns:
         col_index_map = {c: i for i, c in enumerate(df_show.columns)}
         for col_name in color_columns:
@@ -140,8 +160,45 @@ def df_to_table_image(
                 except:
                     pass
 
+    # -------------------------
+    # ✅ "딱 맞게" 자동 맞춤 (핵심)
+    # 표가 영역 밖으로 나가면 폰트/스케일을 줄임
+    # -------------------------
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+
+    # axes 영역 bbox (픽셀)
+    ax_bbox = ax.get_window_extent(renderer=renderer)
+
+    for _ in range(25):  # 최대 25번 조정
+        fig.canvas.draw()
+        tb_bbox = table.get_window_extent(renderer=renderer)
+
+        too_wide = tb_bbox.width > ax_bbox.width
+        too_tall = tb_bbox.height > ax_bbox.height
+
+        if not (too_wide or too_tall):
+            break  # ✅ 딱 맞음
+
+        # ✅ 높이가 넘치면 scale_y 먼저 줄이는 게 효과적
+        if too_tall:
+            scale_y *= 0.92
+            table.scale(1.0, 0.92)
+
+        # ✅ 폭이 넘치면 폰트 줄이거나 scale_x 줄이기
+        if too_wide:
+            scale_x *= 0.95
+            table.scale(0.95, 1.0)
+
+        # ✅ 폰트도 같이 줄이기
+        font_size = max(7, int(font_size * 0.95))
+        table.set_fontsize(font_size)
+
+    # -------------------------
+    # ✅ 저장 (크기 고정)
+    # -------------------------
     ensure_dir(os.path.dirname(save_path))
-    plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)  # ✅ tight 제거
+    plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)  # ✅ tight 금지
     plt.close()
 
 
