@@ -20,8 +20,8 @@ HISTORY_PATH = os.path.join(JSON_DIR, "lotto_history.json")
 # ==================================================
 # ✅ 저장 이미지 크기 통일 (모든 PNG = 1024x1024)
 # ==================================================
-TARGET_W = 1024
-TARGET_H = 1024
+TARGET_W = 2048
+TARGET_H = 2048
 SAVE_DPI = 220
 FIXED_FIGSIZE = (TARGET_W / SAVE_DPI, TARGET_H / SAVE_DPI)
 
