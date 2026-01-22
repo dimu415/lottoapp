@@ -198,7 +198,7 @@ def make_numbercount_images(stats_json):
     df_rank = df_rank[["랭킹", "번호", "출현횟수"]]
 
     page_size = 10
-    total_pages = 10
+    total_pages = 5
     col_widths = [0.18, 0.22, 0.25]
 
     for i in range(total_pages):
@@ -400,7 +400,7 @@ def make_sum_bucket_bar(stats_json):
     df_sum = pd.DataFrame(stats_json.get("sum_stats", []))
     if df_sum.empty:
         fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
-        fig.subplots_adjust(left=0.16, right=0.95, top=0.90, bottom=0.22)
+        fig.subplots_adjust(left=0.95, right=0.95, top=0.90, bottom=0.22)
 
         ax.axis("off")
         ax.text(0.5, 0.5, "sum_stats 데이터 없음", ha="center", va="center",
