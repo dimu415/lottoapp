@@ -73,18 +73,19 @@ def ensure_dir(path: str):
 def df_to_table_image(
     df: pd.DataFrame,
     save_path: str,
-    title: str = "",          # ✅ 받아도 무시 (호환 유지)
+    title: str = "",
     color_columns=None,
     col_widths=None,
     font_prop=None,
-    title_fontsize=26,        # ✅ 받아도 무시
+    title_fontsize=26,
     base_fontsize=16
 ):
     fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
     ax.axis("off")
 
-    # ✅ 여백
-    #fig.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.06)
+    # ✅ 여백 완전 제거 (캔버스 2048x2048 꽉 채우기)
+    fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
+    ax.set_position([0, 0, 1, 1])
 
     # ✅ 데이터 없음
     if df is None or df.empty:
@@ -121,14 +122,14 @@ def df_to_table_image(
     if row_count >= 55:
         scale_y = 0.88
 
-    # ✅ 표 위치/크기 고정
+    # ✅ 표를 진짜 꽉 채움 (여백 0)
     table = ax.table(
         cellText=df_show.values,
         colLabels=df_show.columns,
         cellLoc="center",
         colLoc="center",
         colWidths=col_widths,
-        bbox=[0.02, 0.05, 0.96, 0.90]  # ✅ 타이틀 없으니 표 영역 좀 더 키움
+        bbox=[0.01, 0.01, 0.98, 0.98]   # ✅ 여기 핵심!!
     )
 
     table.auto_set_font_size(False)
@@ -156,6 +157,8 @@ def df_to_table_image(
                     pass
 
     ensure_dir(os.path.dirname(save_path))
+
+    # ✅ 저장도 여백 없이 (캔버스 유지)
     plt.savefig(save_path, dpi=SAVE_DPI, transparent=True)
     plt.close()
 
@@ -378,7 +381,8 @@ def make_sum_bucket_bar(stats_json):
     df_sum = pd.DataFrame(stats_json.get("sum_stats", []))
     if df_sum.empty:
         fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
-        fig.subplots_adjust(left=0.95, right=0.95, top=0.90, bottom=0.22)
+        fig.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
+        ax.set_position([0.01, 0.01, 0.98, 0.98])
 
         ax.axis("off")
         ax.text(0.5, 0.5, "sum_stats 데이터 없음", ha="center", va="center",
