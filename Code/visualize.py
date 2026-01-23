@@ -78,7 +78,7 @@ def df_to_table_image(
     col_widths=None,
     font_prop=None,
     title_fontsize=26,
-    base_fontsize=16
+    base_fontsize=24
 ):
     fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
     ax.axis("off")
@@ -107,11 +107,11 @@ def df_to_table_image(
     # ✅ 행 많으면 폰트 자동 감소
     font_size = base_fontsize
     if row_count >= 20:
-        font_size = min(font_size, 12)
+        font_size = min(font_size, 14)
     if row_count >= 35:
-        font_size = min(font_size, 10)
+        font_size = min(font_size, 12)
     if row_count >= 55:
-        font_size = min(font_size, 8)
+        font_size = min(font_size, 10)
 
     # ✅ 셀 높이 자동 조절
     scale_y = 1.15
