@@ -84,7 +84,7 @@ def df_to_table_image(
     ax.axis("off")
 
     # ✅ 여백
-    fig.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.06)
+    #fig.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.06)
 
     # ✅ 데이터 없음
     if df is None or df.empty:
@@ -435,9 +435,6 @@ def make_sum_bucket_bar(stats_json):
 
     # ✅ 타이틀 제거
     # ax.set_title("당첨번호합계", fontproperties=font_prop if font_prop else None, fontsize=26, pad=6)
-
-    ax.set_xlabel("합계 구간(20단위)", fontproperties=font_prop if font_prop else None, fontsize=18, labelpad=10)
-    ax.set_ylabel("비율(%)", fontproperties=font_prop if font_prop else None, fontsize=18, labelpad=10)
 
     ax.grid(True, axis="y", alpha=0.25)
 
