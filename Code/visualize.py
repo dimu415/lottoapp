@@ -68,41 +68,30 @@ def ensure_dir(path: str):
 
 # ==================================================
 # ✅ 공통: DataFrame → PNG(표 이미지) 저장
-#    - 제목/표 거리 가까움
-#    - 자동으로 표 크기 맞춤 (겹침/잘림 줄임)
+#    ✅ 타이틀(제목) 완전 제거 버전
 # ==================================================
 def df_to_table_image(
     df: pd.DataFrame,
     save_path: str,
-    title: str = "",
+    title: str = "",          # ✅ 받아도 무시 (호환 유지)
     color_columns=None,
     col_widths=None,
     font_prop=None,
-    title_fontsize=26,
+    title_fontsize=26,        # ✅ 받아도 무시
     base_fontsize=16
 ):
     fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
     ax.axis("off")
 
-    # ✅ 여백 (왼쪽 라벨 잘림 방지에도 도움)
+    # ✅ 여백
     fig.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.06)
-
-    # ✅ 제목을 축 안쪽에 직접 찍는다 (표와 거리 확 줄어듦)
-    if title:
-        ax.text(
-            0.5, 0.97, title,
-            ha="center", va="top",
-            fontsize=title_fontsize,
-            transform=ax.transAxes,
-            fontproperties=font_prop if font_prop else None
-        )
 
     # ✅ 데이터 없음
     if df is None or df.empty:
         ax.text(
             0.5, 0.5, "데이터 없음",
             ha="center", va="center",
-            fontsize=title_fontsize,
+            fontsize=base_fontsize + 8,
             transform=ax.transAxes,
             fontproperties=font_prop if font_prop else None
         )
@@ -132,14 +121,14 @@ def df_to_table_image(
     if row_count >= 55:
         scale_y = 0.88
 
-    # ✅ 표를 위쪽으로 끌어올린다 (제목과 거리 최소화)
+    # ✅ 표 위치/크기 고정
     table = ax.table(
         cellText=df_show.values,
         colLabels=df_show.columns,
         cellLoc="center",
         colLoc="center",
         colWidths=col_widths,
-        bbox=[0.02, 0.05, 0.96, 0.86]  # ✅ 핵심: 표 위치/크기 직접 고정 (위로 올림)
+        bbox=[0.02, 0.05, 0.96, 0.90]  # ✅ 타이틀 없으니 표 영역 좀 더 키움
     )
 
     table.auto_set_font_size(False)
@@ -171,11 +160,9 @@ def df_to_table_image(
     plt.close()
 
 
-
 # ==================================================
 # 1) 번호 출현 횟수 랭킹 (10개씩 페이지)
-# ✅ 제목: "번호 출현 랭킹" 고정
-# ✅ 제목/표 거리 가까움
+# ✅ 타이틀 제거
 # ==================================================
 def make_numbercount_images(stats_json):
     out_folder = os.path.join(OUT_DIR, "numbercount")
@@ -186,7 +173,7 @@ def make_numbercount_images(stats_json):
         df_to_table_image(
             df_number,
             os.path.join(out_folder, "nc1.png"),
-            "번호 출현 랭킹",
+            "",                  # ✅ 타이틀 제거
             ["번호"],
             font_prop=font_prop
         )
@@ -211,19 +198,17 @@ def make_numbercount_images(stats_json):
         df_to_table_image(
             page_df,
             save_path,
-            "번호 출현 랭킹",  # ✅ 제목 고정
+            "",  # ✅ 타이틀 제거
             color_columns=["번호"],
             col_widths=col_widths,
             font_prop=font_prop,
-            title_fontsize=26,
             base_fontsize=15
         )
 
 
 # ==================================================
 # 2) 최근 10회 당첨번호 표
-# ✅ 글씨 너무 큼 -> base_fontsize 낮춤
-# ✅ 제목/표 거리 줄임
+# ✅ 타이틀 제거
 # ==================================================
 def make_recent10_image(history_json):
     out_folder = os.path.join(OUT_DIR, "recentNumber")
@@ -234,9 +219,8 @@ def make_recent10_image(history_json):
         df_to_table_image(
             pd.DataFrame(),
             os.path.join(out_folder, "rec1.png"),
-            "최근 10회 당첨번호",
+            "",  # ✅ 타이틀 제거
             font_prop=font_prop,
-            title_fontsize=24,
             base_fontsize=12
         )
         return
@@ -262,19 +246,17 @@ def make_recent10_image(history_json):
     df_to_table_image(
         df_recent,
         save_path,
-        "최근 10회 당첨번호",
+        "",  # ✅ 타이틀 제거
         color_columns=["숫자1", "숫자2", "숫자3", "숫자4", "숫자5", "숫자6", "보너스"],
         col_widths=[0.16, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12],
         font_prop=font_prop,
-        title_fontsize=24,
         base_fontsize=11
     )
 
 
 # ==================================================
 # 3) 동반출현 통계 (15회 이상)
-# ✅ 제목: "동반출현" 만
-# ✅ 제목/표 거리 가까움
+# ✅ 타이틀 제거
 # ==================================================
 def make_pairstats_images(stats_json):
     out_folder = os.path.join(OUT_DIR, "pairStats")
@@ -285,7 +267,7 @@ def make_pairstats_images(stats_json):
         df_to_table_image(
             df_pair,
             os.path.join(out_folder, "ps1.png"),
-            "동반출현",
+            "",  # ✅ 타이틀 제거
             ["번호1", "번호2"],
             font_prop=font_prop
         )
@@ -297,7 +279,7 @@ def make_pairstats_images(stats_json):
         df_to_table_image(
             df_pair,
             os.path.join(out_folder, "ps1.png"),
-            "동반출현",
+            "",  # ✅ 타이틀 제거
             font_prop=font_prop
         )
         return
@@ -320,19 +302,17 @@ def make_pairstats_images(stats_json):
         df_to_table_image(
             page_df,
             save_path,
-            "동반출현",  # ✅ 제목 고정
+            "",  # ✅ 타이틀 제거
             color_columns=["번호1", "번호2"],
             col_widths=col_widths,
             font_prop=font_prop,
-            title_fontsize=26,
             base_fontsize=13
         )
 
 
 # ==================================================
 # 4) 전이 Best: prev별로 next 최다 1개만
-# ✅ 제목: "전이 TOP" 만
-# ✅ 제목/표 거리 가까움
+# ✅ 타이틀 제거
 # ==================================================
 def make_transition_best_images(stats_json):
     out_folder = os.path.join(OUT_DIR, "transitionBest")
@@ -343,7 +323,7 @@ def make_transition_best_images(stats_json):
         df_to_table_image(
             df_tr,
             os.path.join(out_folder, "tb1.png"),
-            "전이",
+            "",  # ✅ 타이틀 제거
             font_prop=font_prop
         )
         return
@@ -379,19 +359,17 @@ def make_transition_best_images(stats_json):
         df_to_table_image(
             page_df,
             save_path,
-            "전이 TOP",  # ✅ 제목 고정
+            "",  # ✅ 타이틀 제거
             color_columns=["번호", "다음회차 최다번호"],
             col_widths=col_widths,
             font_prop=font_prop,
-            title_fontsize=26,
             base_fontsize=13
         )
 
 
 # ==================================================
 # 5) 합계 20단위 버킷 - 비율 막대그래프
-# ✅ 하단 글씨 겹침 -> 짧게 + 회전 + 폰트 작게
-# ✅ 시작 구간: 41~60 부터 나오게 (1~20 제거)
+# ✅ 타이틀 제거 (set_title 제거)
 # ==================================================
 def make_sum_bucket_bar(stats_json):
     out_folder = os.path.join(OUT_DIR, "sumBucket")
@@ -414,7 +392,6 @@ def make_sum_bucket_bar(stats_json):
 
     # ✅ 20단위 버킷을 21부터 시작하도록 변경 (1~20 제거)
     def bucket_label(s):
-        # 21~40, 41~60, 61~80 ...
         start = ((s - 21) // 20) * 20 + 21
         end = start + 19
         return f"{start}~{end}"
@@ -425,7 +402,6 @@ def make_sum_bucket_bar(stats_json):
     total = bucket_df["count"].sum()
     bucket_df["ratio"] = (bucket_df["count"] / total) * 100
 
-    # ✅ 시작을 41~60부터 보여주고 싶다 -> 정렬 후 21~40은 제거(있으면)
     def start_value(label):
         return int(label.split("~")[0])
 
@@ -453,17 +429,18 @@ def make_sum_bucket_bar(stats_json):
         colors.append(lerp_color(t))
 
     fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
-    ax.set_position([0.08, 0.18, 0.88, 0.75])  # ✅ 아래 공간 확보 (겹침 방지)
+    ax.set_position([0.08, 0.18, 0.88, 0.75])
 
     bars = ax.bar(bucket_df["bucket"], bucket_df["ratio"], color=colors)
 
-    ax.set_title("당첨번호합계", fontproperties=font_prop if font_prop else None, fontsize=26, pad=6)
+    # ✅ 타이틀 제거
+    # ax.set_title("당첨번호합계", fontproperties=font_prop if font_prop else None, fontsize=26, pad=6)
+
     ax.set_xlabel("합계 구간(20단위)", fontproperties=font_prop if font_prop else None, fontsize=18, labelpad=10)
     ax.set_ylabel("비율(%)", fontproperties=font_prop if font_prop else None, fontsize=18, labelpad=10)
 
     ax.grid(True, axis="y", alpha=0.25)
 
-    # ✅ x축 라벨 짧게/작게/회전해서 겹침 방지
     ax.tick_params(axis="x", labelrotation=35, labelsize=12)
     ax.tick_params(axis="y", labelsize=14)
 
@@ -484,8 +461,7 @@ def make_sum_bucket_bar(stats_json):
 
 # ==================================================
 # 6) 홀짝 파이
-# ✅ 파이 안 % 글씨를 "중간"에 위치시키기
-# ✅ 오른쪽 표기(홀:짝 1:6 12.3%) 가 안 잘리게 안쪽에 넣기
+# ✅ 타이틀 제거 (set_title 제거)
 # ==================================================
 def make_odd_even_pie(stats_json):
     out_folder = os.path.join(OUT_DIR, "oddEven")
@@ -513,10 +489,8 @@ def make_odd_even_pie(stats_json):
     total = sum(sizes)
     percentages = [(v / total) * 100 for v in sizes]
 
-    # ✅ 범례 라벨: "1:6 12.3%" 형태로
     legend_labels = [f"{lab}  {pct:.1f}%" for lab, pct in zip(labels_raw, percentages)]
 
-    # ✅ 상위 4개만 % 표시
     def make_autopct():
         idx = {"i": -1}
         def _autopct(pct):
@@ -527,29 +501,26 @@ def make_odd_even_pie(stats_json):
         return _autopct
 
     fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
-
-    # ✅ 오른쪽 공간 만들기 (범례 안 잘리게)
     ax.set_position([0.06, 0.12, 0.66, 0.78])
 
     wedges, texts, autotexts = ax.pie(
         sizes,
         labels=None,
         autopct=make_autopct(),
-        pctdistance=0.70,             # ✅ % 글씨 "중간" 위치
+        pctdistance=0.70,
         startangle=90,
-        wedgeprops={"width": 0.50, "edgecolor": "white"}  # 도넛 두껍게
+        wedgeprops={"width": 0.50, "edgecolor": "white"}
     )
 
-    ax.set_title("홀짝 비율", fontproperties=font_prop if font_prop else None, fontsize=26, pad=6)
+    # ✅ 타이틀 제거
+    # ax.set_title("홀짝 비율", fontproperties=font_prop if font_prop else None, fontsize=26, pad=6)
 
-    # ✅ % 글씨 크기 키우기
     for t in autotexts:
         t.set_fontsize(16)
         if font_prop:
             t.set_fontproperties(font_prop)
 
-    # ✅ 범례를 그림 안쪽(오른쪽)으로 넣기 → 안 잘림
-    legend = ax.legend(
+    ax.legend(
         wedges,
         legend_labels,
         title="표기: 홀:짝",
