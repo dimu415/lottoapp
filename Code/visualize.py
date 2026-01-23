@@ -471,6 +471,8 @@ def make_odd_even_pie(stats_json):
     df_oe = pd.DataFrame(stats_json.get("odd_even_stats", []))
     if df_oe.empty:
         fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
+        fig.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
+        ax.set_position([0.01, 0.01, 0.98, 0.98])
         ax.axis("off")
         ax.text(0.5, 0.5, "odd_even_stats 데이터 없음", ha="center", va="center",
                 fontsize=20, fontproperties=font_prop if font_prop else None)
