@@ -205,7 +205,7 @@ def make_numbercount_images(stats_json):
             color_columns=["번호"],
             col_widths=col_widths,
             font_prop=font_prop,
-            base_fontsize=15
+            base_fontsize=24
         )
 
 
@@ -224,7 +224,7 @@ def make_recent10_image(history_json):
             os.path.join(out_folder, "rec1.png"),
             "",  # ✅ 타이틀 제거
             font_prop=font_prop,
-            base_fontsize=12
+            base_fontsize=16
         )
         return
 
@@ -309,7 +309,7 @@ def make_pairstats_images(stats_json):
             color_columns=["번호1", "번호2"],
             col_widths=col_widths,
             font_prop=font_prop,
-            base_fontsize=13
+            base_fontsize=24
         )
 
 
@@ -366,7 +366,7 @@ def make_transition_best_images(stats_json):
             color_columns=["번호", "다음회차 최다번호"],
             col_widths=col_widths,
             font_prop=font_prop,
-            base_fontsize=13
+            base_fontsize=24
         )
 
 
