@@ -107,11 +107,11 @@ def df_to_table_image(
     # ✅ 행 많으면 폰트 자동 감소
     font_size = base_fontsize
     if row_count >= 20:
-        font_size = min(font_size, 14)
+        font_size = min(font_size, 20)
     if row_count >= 35:
-        font_size = min(font_size, 12)
+        font_size = min(font_size, 18)
     if row_count >= 55:
-        font_size = min(font_size, 10)
+        font_size = min(font_size, 16)
 
     # ✅ 셀 높이 자동 조절
     scale_y = 1.15
@@ -205,7 +205,7 @@ def make_numbercount_images(stats_json):
             color_columns=["번호"],
             col_widths=col_widths,
             font_prop=font_prop,
-            base_fontsize=24
+            base_fontsize=40
         )
 
 
@@ -234,12 +234,12 @@ def make_recent10_image(history_json):
         nums = item.get("numbers", [])
         rows.append({
             "회차": item.get("round"),
-            "숫자1": nums[0] if len(nums) > 0 else None,
-            "숫자2": nums[1] if len(nums) > 1 else None,
-            "숫자3": nums[2] if len(nums) > 2 else None,
-            "숫자4": nums[3] if len(nums) > 3 else None,
-            "숫자5": nums[4] if len(nums) > 4 else None,
-            "숫자6": nums[5] if len(nums) > 5 else None,
+            "숫자 1": nums[0] if len(nums) > 0 else None,
+            "숫자 2": nums[1] if len(nums) > 1 else None,
+            "숫자 3": nums[2] if len(nums) > 2 else None,
+            "숫자 4": nums[3] if len(nums) > 3 else None,
+            "숫자 5": nums[4] if len(nums) > 4 else None,
+            "숫자 6": nums[5] if len(nums) > 5 else None,
             "보너스": item.get("bonus"),
         })
 
@@ -250,10 +250,10 @@ def make_recent10_image(history_json):
         df_recent,
         save_path,
         "",  # ✅ 타이틀 제거
-        color_columns=["숫자1", "숫자2", "숫자3", "숫자4", "숫자5", "숫자6", "보너스"],
+        color_columns=["숫자 1", "숫자 2", "숫자 3", "숫자 4", "숫자 5", "숫자 6", "보너스"],
         col_widths=[0.16, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12],
         font_prop=font_prop,
-        base_fontsize=11
+        base_fontsize=30
     )
 
 
@@ -309,7 +309,7 @@ def make_pairstats_images(stats_json):
             color_columns=["번호1", "번호2"],
             col_widths=col_widths,
             font_prop=font_prop,
-            base_fontsize=24
+            base_fontsize=30
         )
 
 
@@ -366,7 +366,7 @@ def make_transition_best_images(stats_json):
             color_columns=["번호", "다음회차 최다번호"],
             col_widths=col_widths,
             font_prop=font_prop,
-            base_fontsize=24
+            base_fontsize=30
         )
 
 
@@ -519,7 +519,7 @@ def make_odd_even_pie(stats_json):
     # ax.set_title("홀짝 비율", fontproperties=font_prop if font_prop else None, fontsize=26, pad=6)
 
     for t in autotexts:
-        t.set_fontsize(16)
+        t.set_fontsize(25)
         if font_prop:
             t.set_fontproperties(font_prop)
 
@@ -528,7 +528,7 @@ def make_odd_even_pie(stats_json):
         legend_labels,
         title="표기: 홀:짝",
         loc="center left",
-        bbox_to_anchor=(1.00, 0.5),
+        bbox_to_anchor=(1.00,1.5),
         prop=font_prop if font_prop else None,
         title_fontproperties=font_prop if font_prop else None,
         frameon=False
