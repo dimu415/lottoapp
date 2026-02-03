@@ -78,7 +78,7 @@ def df_to_table_image(
     col_widths=None,
     font_prop=None,
     title_fontsize=26,
-    base_fontsize=24
+    base_fontsize=60
 ):
     fig, ax = plt.subplots(figsize=FIXED_FIGSIZE, dpi=SAVE_DPI)
     ax.axis("off")
@@ -106,13 +106,6 @@ def df_to_table_image(
 
     # ✅ 행 많으면 폰트 자동 감소
     font_size = base_fontsize
-    if row_count >= 20:
-        font_size = min(font_size, 20)
-    if row_count >= 35:
-        font_size = min(font_size, 18)
-    if row_count >= 55:
-        font_size = min(font_size, 16)
-
     # ✅ 셀 높이 자동 조절
     scale_y = 1.15
     if row_count >= 20:
@@ -205,7 +198,7 @@ def make_numbercount_images(stats_json):
             color_columns=["번호"],
             col_widths=col_widths,
             font_prop=font_prop,
-            base_fontsize=40
+            base_fontsize=60
         )
 
 
@@ -224,7 +217,7 @@ def make_recent10_image(history_json):
             os.path.join(out_folder, "rec1.png"),
             "",  # ✅ 타이틀 제거
             font_prop=font_prop,
-            base_fontsize=16
+            base_fontsize=60
         )
         return
 
@@ -253,7 +246,7 @@ def make_recent10_image(history_json):
         color_columns=["숫자 1", "숫자 2", "숫자 3", "숫자 4", "숫자 5", "숫자 6", "보너스"],
         col_widths=[0.16, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12, 0.12],
         font_prop=font_prop,
-        base_fontsize=30
+        base_fontsize=60
     )
 
 
@@ -309,7 +302,7 @@ def make_pairstats_images(stats_json):
             color_columns=["번호1", "번호2"],
             col_widths=col_widths,
             font_prop=font_prop,
-            base_fontsize=30
+            base_fontsize=60
         )
 
 
@@ -366,7 +359,7 @@ def make_transition_best_images(stats_json):
             color_columns=["번호", "다음회차 최다번호"],
             col_widths=col_widths,
             font_prop=font_prop,
-            base_fontsize=30
+            base_fontsize=60
         )
 
 
