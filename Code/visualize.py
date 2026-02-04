@@ -521,7 +521,7 @@ def make_odd_even_pie(stats_json):
         legend_labels,
         title="표기: 홀:짝",
         loc="center left",
-        bbox_to_anchor=(1.00,1.5),
+        bbox_to_anchor=(1.00,0.5),
         prop=font_prop if font_prop else None,
         title_fontproperties=font_prop if font_prop else None,
         frameon=False
