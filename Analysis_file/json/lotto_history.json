@@ -1,6 +1,19 @@
 {
-  "total_rounds": 1231,
+  "total_rounds": 1232,
   "history": [
+    {
+      "round": 1234,
+      "draw_date": "20260725",
+      "numbers": [
+        1,
+        15,
+        19,
+        31,
+        35,
+        43
+      ],
+      "bonus": 27
+    },
     {
       "round": 1233,
       "draw_date": "20260718",
